@@ -1,0 +1,71 @@
+---
+title: 'Managing Access Permissions on Google Platform'
+sidebarTitle: 'Permissions'
+description: 'Set up role-based access control, configure project visibility, and manage what each role can see and do across your Google Platform workspace.'
+---
+
+Google Platform uses a layered permissions model so you can precisely control who accesses what — from the broadest workspace-level policies down to individual files and tasks. Understanding the relationship between roles, project visibility, and resource-level sharing lets you keep sensitive work secure while giving collaborators exactly the access they need to stay productive.
+
+## Role Assignments
+
+Roles determine what actions a member can take across the workspace and within individual projects. Every member is assigned one workspace-level role when they are invited, and project owners can optionally assign a different role for a specific project.
+
+For a complete breakdown of what each role can see and do — including **Viewer**, **Commenter**, **Editor**, **Admin**, and **Owner** — refer to the [User Roles reference](/concepts/user-roles).
+
+**To assign or change a role:**
+
+1. Navigate to **Settings → Members**.
+2. Find the member whose role you want to update.
+3. Click the role badge next to their name and select a new role from the dropdown.
+4. Confirm the change. The member's permissions update immediately without requiring them to sign out.
+
+## Project Visibility
+
+Project visibility controls who can discover and open a project, independent of the member's workspace role.
+
+**Private**
+Only members who have been explicitly invited to the project can view or interact with it. The project does not appear in search results or the workspace home view for uninvited members. Use Private for sensitive initiatives, early-stage planning, or work that is not yet ready to share.
+
+**Internal**
+Any member of your workspace can find and view the project, but only invited members can make edits. Internal is the recommended default for most in-progress team projects — it promotes transparency without risking accidental changes.
+
+**Public**
+Anyone with the project link can view the project, including people outside your organization who do not have a Google Platform account. Edits still require an invitation, but all content is readable by the general public.
+
+<Warning>
+  Setting a project to **Public** in a corporate environment exposes all project content — including descriptions, attachments, comments, and member names — to anyone on the internet. Before enabling Public visibility, confirm with your security or legal team that the project contains no confidential, proprietary, or personally identifiable information.
+</Warning>
+
+## Resource-Level Permissions
+
+In addition to project-level visibility, you can share individual resources — such as dashboards, documents, or saved views — with specific people without changing the project's overall visibility setting.
+
+**To share a resource:**
+
+1. Open the resource you want to share.
+2. Click the **Share** button in the top-right corner.
+3. In the **Share with people** field, enter the name or email address of the person you want to invite.
+4. Select their access level: **Viewer**, **Commenter**, or **Editor**.
+5. Click **Send Invite** or **Copy Link**, then share the link directly with the recipient.
+
+Resource-level sharing is additive — it grants access to that specific item only. It does not elevate the person's role on the broader project.
+
+## Revoking Access
+
+Remove a member's access to a project or resource when they change teams, leave the organization, or no longer need to view the work.
+
+**To remove a member from a project:**
+
+1. Open the project and navigate to **Project Settings → Members**.
+2. Find the member you want to remove.
+3. Click the **···** overflow menu next to their name.
+4. Select **Remove from Project** and confirm the dialog.
+
+**To remove a member from the entire workspace:**
+
+1. Navigate to **Settings → Members**.
+2. Find the member and open their **···** overflow menu.
+3. Select **Remove from Workspace**.
+4. Confirm the removal. The member is signed out immediately and loses access to all workspace projects and resources.
+
+Removing a member does not delete any content they created. All their tasks, comments, and documents remain intact and are reassigned to the workspace **Unassigned** pool unless you choose a specific successor during the removal flow.

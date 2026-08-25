@@ -1,0 +1,249 @@
+---
+title: 'Projects API: Manage Projects Programmatically'
+sidebarTitle: 'Projects'
+description: 'Create, list, update, and delete projects using the Google Platform Projects API. Automate project provisioning and lifecycle management in your organization.'
+---
+
+The Projects API is the primary interface for managing the organizational units inside your Google Platform workspace. Use it to automate project provisioning at scale, enforce consistent visibility policies, and integrate project lifecycle management into your own tooling or CI/CD pipelines. All endpoints are scoped under `/v1/projects` and require a `read`-scoped key for GET requests, `write` for POST and PATCH, and `admin` for DELETE.
+
+---
+
+## Project Object
+
+Every project endpoint returns objects with the following fields:
+
+<ResponseField name="id" type="string">
+  Unique identifier for the project (UUID format).
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Human-readable name of the project.
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Optional description providing context about the project's purpose.
+</ResponseField>
+
+<ResponseField name="visibility" type="string">
+  Access level. One of `private`, `internal`, or `public`.
+</ResponseField>
+
+<ResponseField name="owner_id" type="string">
+  The `id` of the user who owns the project.
+</ResponseField>
+
+<ResponseField name="member_count" type="integer">
+  Total number of users who are members of this project.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  ISO 8601 timestamp of when the project was created.
+</ResponseField>
+
+---
+
+## GET /projects
+
+List all projects the authenticated user has access to. Results are paginated and can be filtered by visibility.
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  "https://api.your-domain.com/v1/projects?page=1&per_page=20&visibility=internal"
+```
+
+### Query Parameters
+
+<ParamField query="page" type="integer">
+  Page number to retrieve. Defaults to `1`.
+</ParamField>
+
+<ParamField query="per_page" type="integer">
+  Number of projects per page. Defaults to `20`, maximum `100`.
+</ParamField>
+
+<ParamField query="visibility" type="string">
+  Filter results by visibility level. Accepted values: `private`, `internal`, `public`.
+</ParamField>
+
+### Response
+
+Returns a paginated `data` array of project objects.
+
+```json
+{
+  "data": [
+    {
+      "id": "prj_03az5n1r4dph9sy0t",
+      "name": "Platform Redesign",
+      "description": "Q3 UI overhaul initiative.",
+      "visibility": "internal",
+      "owner_id": "usr_01hx3k9p2bnf7qw8r",
+      "member_count": 12,
+      "created_at": "2024-02-20T08:00:00Z"
+    }
+  ],
+  "meta": { "page": 1, "per_page": 20, "total": 7 }
+}
+```
+
+---
+
+## GET /projects/{id}
+
+Retrieve a single project by its unique ID.
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  https://api.your-domain.com/v1/projects/prj_03az5n1r4dph9sy0t
+```
+
+### Path Parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the project to retrieve.
+</ParamField>
+
+### Response
+
+Returns a single project object inside `data`.
+
+```json
+{
+  "data": {
+    "id": "prj_03az5n1r4dph9sy0t",
+    "name": "Platform Redesign",
+    "description": "Q3 UI overhaul initiative.",
+    "visibility": "internal",
+    "owner_id": "usr_01hx3k9p2bnf7qw8r",
+    "member_count": 12,
+    "created_at": "2024-02-20T08:00:00Z"
+  },
+  "meta": {}
+}
+```
+
+---
+
+## POST /projects
+
+Create a new project in your workspace.
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Data Pipeline", "description": "ETL automation project.", "visibility": "private"}' \
+  https://api.your-domain.com/v1/projects
+```
+
+### Body Parameters
+
+<ParamField body="name" type="string" required>
+  The name of the new project. Must be unique within the workspace.
+</ParamField>
+
+<ParamField body="description" type="string">
+  An optional short description of the project's purpose.
+</ParamField>
+
+<ParamField body="visibility" type="string">
+  The visibility level for the project. One of `private`, `internal`, or `public`. Defaults to `internal` if omitted.
+</ParamField>
+
+### Response
+
+Returns the newly created project object with HTTP `201 Created`.
+
+```json
+{
+  "data": {
+    "id": "prj_04bq6o2s5eqi0tz1u",
+    "name": "Data Pipeline",
+    "description": "ETL automation project.",
+    "visibility": "private",
+    "owner_id": "usr_01hx3k9p2bnf7qw8r",
+    "member_count": 1,
+    "created_at": "2024-06-15T11:45:00Z"
+  },
+  "meta": {}
+}
+```
+
+---
+
+## PATCH /projects/{id}
+
+Update one or more fields on an existing project. Include only the fields you want to change.
+
+```bash
+curl -X PATCH \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"visibility": "public", "description": "Now open to all workspace members."}' \
+  https://api.your-domain.com/v1/projects/prj_04bq6o2s5eqi0tz1u
+```
+
+### Path Parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the project to update.
+</ParamField>
+
+### Body Parameters
+
+<ParamField body="name" type="string">
+  A new name for the project.
+</ParamField>
+
+<ParamField body="description" type="string">
+  A new description for the project.
+</ParamField>
+
+<ParamField body="visibility" type="string">
+  Updated visibility level. One of `private`, `internal`, or `public`.
+</ParamField>
+
+### Response
+
+Returns the updated project object inside `data`.
+
+```json
+{
+  "data": {
+    "id": "prj_04bq6o2s5eqi0tz1u",
+    "name": "Data Pipeline",
+    "description": "Now open to all workspace members.",
+    "visibility": "public",
+    "owner_id": "usr_01hx3k9p2bnf7qw8r",
+    "member_count": 1,
+    "created_at": "2024-06-15T11:45:00Z"
+  },
+  "meta": {}
+}
+```
+
+---
+
+## DELETE /projects/{id}
+
+Permanently delete a project and all of its associated resources, members, and activity history.
+
+<Warning>
+  Deleting a project is **irreversible**. All resources, files, and settings attached to the project are permanently removed and cannot be recovered. Revoke member access and export any important data before calling this endpoint.
+</Warning>
+
+```bash
+curl -X DELETE \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  https://api.your-domain.com/v1/projects/prj_04bq6o2s5eqi0tz1u
+```
+
+### Path Parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the project to delete.
+</ParamField>
+
+### Response
+
+Returns HTTP `204 No Content` with an empty body on success.

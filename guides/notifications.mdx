@@ -1,0 +1,85 @@
+---
+title: 'Manage Notifications and Alerts in Google Platform'
+sidebarTitle: 'Notifications'
+description: 'Control which Google Platform events send you email or in-app alerts, configure digest schedules, and silence notifications during focus time.'
+---
+
+Google Platform sends you notifications so you never miss an important update — but too many alerts can become a distraction. Use the settings described below to tune exactly which events reach you, how often, and through which channel, so your notification stream stays useful without overwhelming you.
+
+## Notification Types
+
+Google Platform delivers notifications through two channels:
+
+- **Email** — messages sent to your registered work address.
+- **In-App** — alerts that appear in the bell icon (🔔) menu at the top of every page.
+
+The table below shows the default notification behavior for each event type:
+
+| Event | Email | In-App |
+|---|:---:|:---:|
+| Mentions (`@you`) | ✅ | ✅ |
+| Project updates | ✅ | ✅ |
+| New member joined | ❌ | ✅ |
+| Task assigned to you | ✅ | ✅ |
+| Due date approaching | ✅ | ✅ |
+
+You can override these defaults at both the global level and the individual project level.
+
+## Configuring Per-Project Notifications
+
+Override global defaults for any specific project to raise or lower the signal from that project alone.
+
+<Steps>
+  <Step title="Open the project">
+    Navigate to the project whose notifications you want to adjust.
+  </Step>
+  <Step title="Access notification settings">
+    Click the **bell icon** at the top of the project page (next to the project name), then select **Notification Settings** from the dropdown.
+  </Step>
+  <Step title="Choose your subscription level">
+    Select one of the following options:
+
+    - **All Activity** — receive notifications for every event in the project.
+    - **Participating Only** — receive notifications only for events where you are mentioned or directly involved (default).
+    - **Watching** — receive notifications for high-priority events such as mentions and task assignments only.
+    - **Muted** — disable all notifications from this project.
+  </Step>
+  <Step title="Save your preference">
+    Your selection saves automatically. Changes take effect immediately for new events.
+  </Step>
+</Steps>
+
+## Setting a Digest Schedule
+
+Instead of receiving individual emails for each event, configure a digest to batch notifications into a single daily or weekly summary.
+
+1. Go to **Account Settings** by clicking your avatar in the top-right corner and selecting **Settings**.
+2. Open the **Notifications** tab.
+3. Under **Email Frequency**, select one of:
+   - **Immediate** — each notification triggers a separate email (default).
+   - **Daily Digest** — receive one email per day summarizing all activity. Choose the delivery time using the time picker.
+   - **Weekly Digest** — receive one email per week. Choose the delivery day and time.
+4. Click **Save Preferences**.
+
+Digest emails group notifications by project, making it easy to scan activity across all your workspaces in one read.
+
+## Do Not Disturb Mode
+
+Enable Do Not Disturb (DND) to silence all in-app notifications during focus time. Email notifications are unaffected by DND — configure your email digest schedule separately if you want to reduce email volume as well.
+
+### Enable DND Manually
+
+1. Click your avatar in the top-right corner.
+2. Select **Set Do Not Disturb** from the dropdown.
+3. Choose a duration: **30 minutes**, **1 hour**, **2 hours**, **Until tomorrow**, or **Custom**.
+
+DND ends automatically when the chosen duration expires. A crescent moon icon (🌙) appears next to your avatar to remind you that DND is active.
+
+### Schedule DND Automatically
+
+1. Go to **Account Settings → Notifications**.
+2. Under **Do Not Disturb Schedule**, toggle **Enable recurring schedule**.
+3. Set your start time, end time, and the days of the week when DND should activate automatically.
+4. Click **Save Preferences**.
+
+Teammates who mention you while DND is active still see their mention delivered — you simply receive the in-app notification after DND ends rather than in real time.

@@ -1,0 +1,225 @@
+---
+title: 'Resources API: Upload and Access Shared Files'
+sidebarTitle: 'Resources'
+description: 'Use the Google Platform Resources API to list, upload, download, and delete shared files and links attached to your projects.'
+---
+
+The Resources API lets you attach files and external links directly to your Google Platform projects, making all relevant assets discoverable in one place. Use it to programmatically upload build artifacts, design files, or documents, register external URLs as link resources, and clean up stale attachments as part of automated workflows. All Resources endpoints are nested under a parent project: `/v1/projects/{project_id}/resources`.
+
+---
+
+## Resource Object
+
+Every Resources endpoint returns objects with the following fields:
+
+<ResponseField name="id" type="string">
+  Unique identifier for the resource (UUID format).
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Display name of the resource.
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Resource type. Either `file` (a stored file) or `link` (an external URL).
+</ResponseField>
+
+<ResponseField name="url" type="string">
+  The public download or access URL for the resource.
+</ResponseField>
+
+<ResponseField name="size_bytes" type="integer | null">
+  File size in bytes. `null` for link-type resources.
+</ResponseField>
+
+<ResponseField name="uploaded_by" type="string">
+  The `id` of the user who created or uploaded this resource.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  ISO 8601 timestamp of when the resource was attached to the project.
+</ResponseField>
+
+---
+
+## GET /projects/{project_id}/resources
+
+List all resources attached to a project. Results are paginated.
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  "https://api.your-domain.com/v1/projects/prj_03az5n1r4dph9sy0t/resources?page=1&per_page=20"
+```
+
+### Path Parameters
+
+<ParamField path="project_id" type="string" required>
+  The unique identifier of the project whose resources you want to list.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="page" type="integer">
+  Page number to retrieve. Defaults to `1`.
+</ParamField>
+
+<ParamField query="per_page" type="integer">
+  Number of resources per page. Defaults to `20`, maximum `100`.
+</ParamField>
+
+### Response
+
+Returns a paginated `data` array of resource objects.
+
+```json
+{
+  "data": [
+    {
+      "id": "res_05cr7p3t6frj1ua2v",
+      "name": "Architecture Diagram",
+      "type": "file",
+      "url": "https://cdn.your-domain.com/resources/arch-diagram.pdf",
+      "size_bytes": 204800,
+      "uploaded_by": "usr_01hx3k9p2bnf7qw8r",
+      "created_at": "2024-03-10T14:00:00Z"
+    }
+  ],
+  "meta": { "page": 1, "per_page": 20, "total": 5 }
+}
+```
+
+---
+
+## POST /projects/{project_id}/resources
+
+Attach a resource to a project. Use JSON to register a `link`, or `multipart/form-data` to upload a `file`.
+
+### Path Parameters
+
+<ParamField path="project_id" type="string" required>
+  The unique identifier of the project to attach the resource to.
+</ParamField>
+
+### Body Parameters
+
+<ParamField body="name" type="string" required>
+  Display name for the resource as it will appear in the project.
+</ParamField>
+
+<ParamField body="type" type="string" required>
+  The kind of resource to create. Must be `file` or `link`.
+</ParamField>
+
+<ParamField body="url" type="string">
+  Required when `type` is `link`. The external URL to register as the resource.
+</ParamField>
+
+<ParamField body="file" type="file">
+  Required when `type` is `file`. The binary file content, submitted as `multipart/form-data`.
+</ParamField>
+
+**Attach a link resource:**
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Design Spec", "type": "link", "url": "https://figma.com/file/abc123"}' \
+  https://api.your-domain.com/v1/projects/prj_03az5n1r4dph9sy0t/resources
+```
+
+**Upload a file resource:**
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "name=Release Notes" \
+  -F "type=file" \
+  -F "file=@/local/path/release-notes.pdf" \
+  https://api.your-domain.com/v1/projects/prj_03az5n1r4dph9sy0t/resources
+```
+
+### Response
+
+Returns the newly created resource object with HTTP `201 Created`.
+
+```json
+{
+  "data": {
+    "id": "res_06ds8q4u7gsk2vb3w",
+    "name": "Release Notes",
+    "type": "file",
+    "url": "https://cdn.your-domain.com/resources/release-notes.pdf",
+    "size_bytes": 51200,
+    "uploaded_by": "usr_01hx3k9p2bnf7qw8r",
+    "created_at": "2024-06-20T09:15:00Z"
+  },
+  "meta": {}
+}
+```
+
+---
+
+## GET /projects/{project_id}/resources/{id}
+
+Retrieve a single resource by its ID.
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  https://api.your-domain.com/v1/projects/prj_03az5n1r4dph9sy0t/resources/res_05cr7p3t6frj1ua2v
+```
+
+### Path Parameters
+
+<ParamField path="project_id" type="string" required>
+  The unique identifier of the parent project.
+</ParamField>
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the resource to retrieve.
+</ParamField>
+
+### Response
+
+Returns a single resource object inside `data`.
+
+```json
+{
+  "data": {
+    "id": "res_05cr7p3t6frj1ua2v",
+    "name": "Architecture Diagram",
+    "type": "file",
+    "url": "https://cdn.your-domain.com/resources/arch-diagram.pdf",
+    "size_bytes": 204800,
+    "uploaded_by": "usr_01hx3k9p2bnf7qw8r",
+    "created_at": "2024-03-10T14:00:00Z"
+  },
+  "meta": {}
+}
+```
+
+---
+
+## DELETE /projects/{project_id}/resources/{id}
+
+Remove a resource from a project. For file-type resources, the stored file is also deleted from the CDN.
+
+```bash
+curl -X DELETE \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  https://api.your-domain.com/v1/projects/prj_03az5n1r4dph9sy0t/resources/res_05cr7p3t6frj1ua2v
+```
+
+### Path Parameters
+
+<ParamField path="project_id" type="string" required>
+  The unique identifier of the parent project.
+</ParamField>
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the resource to delete.
+</ParamField>
+
+### Response
+
+Returns HTTP `204 No Content` with an empty body on success.

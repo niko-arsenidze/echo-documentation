@@ -1,13 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
+  "projectType": "saas",
+  "projectName": "Google",
+  "projectDescription": "An internal platform providing tools, workflows, and resources for team members to collaborate, manage work, and access services.",
   "theme": "maple",
-  "name": "Google",
-  "colors": {
-    "primary": "#ef7025",
-    "light": "#eec9bc",
-    "dark": "#4fa1ab"
-  },
-  "favicon": "/favicon.svg",
+  "primaryColor": "#ef7025",
+  "lightColor": "#eec9bc",
+  "darkColor": "#4fa1ab",
   "navigation": {
     "tabs": [
       {
@@ -78,11 +76,19 @@
       }
     ]
   },
-  "navbar": {
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.google.com"
-    }
-  }
+  "keyFeatures": [
+    "Team collaboration and project management",
+    "Role-based access control",
+    "Third-party integrations",
+    "Configurable notifications and workflows",
+    "REST API for automation"
+  ],
+  "publicApiSurface": [
+    "GET /users",
+    "POST /users",
+    "GET /projects",
+    "POST /projects",
+    "GET /resources",
+    "POST /api/auth/token"
+  ]
 }

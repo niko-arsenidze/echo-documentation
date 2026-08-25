@@ -1,0 +1,165 @@
+---
+title: 'Troubleshoot Common Google Platform Issues'
+sidebarTitle: 'Troubleshooting'
+description: 'Fix common issues with Google Platform: login failures, missing notifications, slow performance, integration errors, and API authentication problems.'
+---
+
+Most problems with Google Platform fall into a small set of categories and can be resolved in a few minutes without contacting support. Work through the relevant section below, following each step in order. If a fix resolves your issue, you do not need to continue. If you exhaust all steps and the problem persists, collect the details noted at the end of each section and reach out via the [Contact Support](/support/contact) page.
+
+---
+
+## Login Issues
+
+Trouble signing in is usually caused by an SSO misconfiguration, an expired session token, or a browser storing stale cookies.
+
+<AccordionGroup>
+
+  <Accordion title="SSO / SAML errors on the login page">
+    **Cause:** Your identity provider (IdP) returned an error response during the SAML or OIDC handshake. This commonly happens after an IdP certificate rotation, a metadata URL change, or a user account being suspended in the IdP.
+
+    **Solution:**
+    1. Clear your browser cookies and cache, then try signing in again.
+    2. Confirm your account is active in your organisation's IdP (Okta, Azure AD, Google Workspace, etc.). If it is suspended or deprovisioned, contact your IT helpdesk.
+    3. Ask your Google Platform workspace Admin to navigate to **Admin Settings → SSO** and verify that the IdP metadata URL is current and that the signing certificate has not expired.
+    4. Try signing in from a private/incognito window to rule out a browser extension conflict.
+
+    If the error message includes a SAML status code (e.g., `urn:oasis:names:tc:SAML:2.0:status:Requester`), share it with support for faster diagnosis.
+  </Accordion>
+
+  <Accordion title="Session expires immediately after login">
+    **Cause:** A mismatch between your system clock and the platform's time server, or an overly short session timeout configured by your workspace Admin.
+
+    **Solution:**
+    1. Check that your device clock is accurate. Even a few minutes of drift can invalidate session tokens that rely on timestamps.
+    2. Enable automatic time synchronisation on your device (**System Settings → Date & Time → Set automatically**).
+    3. Ask your workspace Admin to review the session timeout duration under **Admin Settings → Security → Session Management** and increase it if it is set below 15 minutes.
+    4. Disable any VPN or proxy that might be intercepting your session cookies and try again.
+  </Accordion>
+
+</AccordionGroup>
+
+---
+
+## Notifications Not Arriving
+
+Missing notifications are almost always caused by email spam filters or disabled notification preferences inside Google Platform.
+
+<AccordionGroup>
+
+  <Accordion title="Email notifications landing in spam">
+    **Cause:** Your mail server or email client is classifying Google Platform notification emails as unsolicited.
+
+    **Solution:**
+    1. Check your spam, junk, or promotions folder for emails from `notifications@your-domain.com`.
+    2. Mark any misclassified emails as **Not spam** to train your email client.
+    3. Add `notifications@your-domain.com` to your contacts or allowlist.
+    4. Ask your IT team to whitelist the Google Platform sending IP range at the mail gateway level — contact support for the current IP list if needed.
+  </Accordion>
+
+  <Accordion title="In-app and email notifications are turned off">
+    **Cause:** Your personal notification settings in Google Platform have been disabled, either manually or by a workspace-level default policy.
+
+    **Solution:**
+    1. Go to **Account Settings → Notifications** and verify that the notification types you expect (mentions, task assignments, comments, etc.) are toggled on.
+    2. Check per-project notification overrides by opening a project, going to **Project Settings → Notifications**, and ensuring you have not muted that project.
+    3. If your workspace Admin has set a default-off policy, ask them to update the default under **Admin Settings → Notification Defaults**.
+  </Accordion>
+
+</AccordionGroup>
+
+---
+
+## Integration Errors
+
+Third-party integrations stop working when authorisation tokens expire or when permissions on the connected service change.
+
+<AccordionGroup>
+
+  <Accordion title="Integration shows 'Unauthorised' or 'Token expired'">
+    **Cause:** The OAuth token used to connect Google Platform to the third-party service has expired or been revoked. This is common after a connected account's password is changed or 2FA is re-enrolled.
+
+    **Solution:**
+    1. Navigate to **Account Settings → Integrations** (or **Admin Settings → Integrations** for workspace-level connections) and find the affected integration.
+    2. Click **Re-authorise** and complete the OAuth consent flow in the popup window.
+    3. Confirm that the account you authorise has the necessary permissions in the third-party service (e.g., read/write access to the relevant boards, repositories, or channels).
+    4. Trigger a manual sync by clicking **Sync now** and check whether the error clears.
+  </Accordion>
+
+  <Accordion title="Webhook deliveries are failing">
+    **Cause:** The destination URL is unreachable, the receiving server returned a non-2xx status, or a firewall is blocking incoming requests from Google Platform's IP range.
+
+    **Solution:**
+    1. Go to **Admin Settings → Webhooks**, select the failing webhook, and review the delivery log for specific HTTP status codes.
+    2. Confirm the destination URL is publicly accessible and returns `200 OK` for a `POST` request.
+    3. Check that your server's firewall allows inbound traffic from Google Platform's webhook IP range — contact support for the current list.
+    4. If deliveries fail intermittently, increase your server's response timeout; Google Platform waits up to 10 seconds before marking a delivery as failed.
+  </Accordion>
+
+</AccordionGroup>
+
+---
+
+## API Authentication Failures
+
+Authentication failures when calling the Google Platform API usually point to a key problem or a rate-limit breach.
+
+<AccordionGroup>
+
+  <Accordion title="Receiving 401 Unauthorized on API requests">
+    **Cause:** The API key is invalid, has been revoked, or is not being sent correctly in the request header.
+
+    **Solution:**
+    1. Verify that your request includes the header `Authorization: Bearer <your-api-key>` — note the space between `Bearer` and the key value.
+    2. Open **Account Settings → API → API Keys** and confirm the key you are using is listed and shows a status of **Active**. If it is missing, it may have been revoked; generate a new one.
+    3. Check that you are not accidentally including extra whitespace or newline characters when reading the key from an environment variable.
+    4. Confirm the key has the required scopes for the endpoint you are calling — some endpoints require elevated permissions that must be granted at key creation time.
+  </Accordion>
+
+  <Accordion title="Receiving 429 Too Many Requests">
+    **Cause:** Your integration is sending more requests per minute than your plan's rate limit allows.
+
+    **Solution:**
+    1. Review the `Retry-After` response header — it contains the number of seconds to wait before retrying.
+    2. Implement exponential backoff with jitter in your API client so it automatically slows down when it receives a `429`.
+    3. Cache responses where possible to avoid redundant read requests.
+    4. If you consistently hit the rate limit under normal load, contact support to discuss a higher-tier plan or a dedicated rate-limit increase.
+  </Accordion>
+
+</AccordionGroup>
+
+---
+
+## Slow Performance
+
+Performance problems in Google Platform are often local to the browser or network rather than a platform-wide outage.
+
+<AccordionGroup>
+
+  <Accordion title="Pages load slowly or time out">
+    **Cause:** A full browser cache, memory-heavy extensions, or a degraded network connection can all contribute to slow load times.
+
+    **Solution:**
+    1. Open a private/incognito window and navigate to Google Platform. If it loads faster, the issue is browser-side (cache, extensions, or local storage).
+    2. Clear your browser cache and hard-reload the page (`Ctrl + Shift + R` on Windows/Linux, `Cmd + Shift + R` on macOS).
+    3. Disable browser extensions one by one to identify whether any are interfering.
+    4. Run a speed test to confirm your network bandwidth and latency are within normal range. If you are on a corporate network, check with IT for any bandwidth throttling or proxy settings.
+    5. Check the [Google Platform Status Page](https://status.your-domain.com) to rule out a platform-wide incident.
+  </Accordion>
+
+  <Accordion title="The app becomes unresponsive with large projects">
+    **Cause:** Projects with very large numbers of tasks, files, or members place greater demand on client-side rendering.
+
+    **Solution:**
+    1. Use filters and search to narrow the data displayed on screen rather than loading all records at once.
+    2. Archive completed tasks and old milestones to reduce the active dataset.
+    3. Ensure you are using a supported, up-to-date browser — Google Chrome and Mozilla Firefox (latest two versions) offer the best performance.
+    4. If your device has limited RAM (under 8 GB), close unused browser tabs and applications before working in large projects.
+  </Accordion>
+
+</AccordionGroup>
+
+---
+
+<Note>
+  If you have worked through all the steps above and are still experiencing issues, contact the support team at **support@your-domain.com** or use the in-app help widget (the **?** icon in the bottom-right corner). When you reach out, include: your browser name and version, a screenshot or screen recording of the error, the approximate time the issue first occurred, and any error codes or messages displayed on screen. This information lets the team diagnose your issue without needing extra back-and-forth.
+</Note>

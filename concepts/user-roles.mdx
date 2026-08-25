@@ -1,0 +1,26 @@
+---
+title: 'User Roles and Permissions in Google Platform'
+sidebarTitle: 'User Roles'
+description: "Learn about the Owner, Admin, Member, and Viewer roles in Google Platform, what each can do, and how role assignments affect your team's access."
+---
+
+Google Platform uses a role-based access model to give you precise control over what each person in your workspace can see and do. Roles exist at two levels: the **workspace level**, which governs platform-wide actions like inviting new members and managing billing, and the **project level**, which controls access to a specific project's tasks, resources, and settings. Understanding the distinction between these levels helps you build a permission structure that keeps your work secure without slowing your team down.
+
+## Roles at a Glance
+
+| Role | Description | Can Manage Projects | Can Invite Members | API Access |
+|------|-------------|--------------------|--------------------|------------|
+| **Owner** | Full control over the workspace, including billing and deletion. Typically assigned to an IT administrator or executive sponsor. | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Admin** | Broad administrative access. Can manage all projects, configure integrations, and invite or remove members. Cannot delete the workspace. | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Member** | Standard contributor access. Can create and edit projects they are assigned to, upload resources, and collaborate on tasks. | ✅ Own projects only | ❌ No | ✅ Yes |
+| **Viewer** | Read-only access. Can browse projects and resources they have been granted access to but cannot create, edit, or delete anything. | ❌ No | ❌ No | ❌ No |
+
+## Changing Roles
+
+To change a team member's role, navigate to the project where you want to update their access and open **Project Settings > Members**. Find the person whose role you want to change, click the role badge next to their name, and select the new role from the dropdown. The change takes effect immediately — the member's permissions update in real time without requiring them to log out and back in.
+
+Only users with the **Owner** or **Admin** role can change role assignments. If you hold a Member role and need to elevate someone's access, ask an Admin or the workspace Owner to make the change on your behalf.
+
+<Note>
+  Organization-level roles — including the workspace Owner and Admin designations — are managed by your IT administrator, not within the Google Platform UI. If you need your own workspace role changed, or if you believe a colleague's workspace-level permissions are incorrect, contact your IT admin directly. Project-level role changes (described above) remain in the hands of project Owners and Admins.
+</Note>

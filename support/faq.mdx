@@ -1,0 +1,62 @@
+---
+title: 'Frequently Asked Questions About Google Platform'
+sidebarTitle: 'FAQ'
+description: 'Answers to the most common questions about Google Platform: access, account management, project limits, API keys, and billing for enterprise teams.'
+---
+
+Whether you are just getting started or managing a large enterprise workspace, you will likely run into questions about how Google Platform works. Browse the answers below to quickly resolve the most common queries — and if you cannot find what you need, visit the [Contact Support](/support/contact) page to reach the team directly.
+
+<AccordionGroup>
+
+  <Accordion title="How do I reset my password?">
+    Navigate to the Google Platform login page and click **Forgot password?** beneath the sign-in form. Enter the email address associated with your account and click **Send reset link**. You will receive an email within a few minutes containing a secure, time-limited link. Click that link, enter your new password twice to confirm it, and then sign in as normal.
+
+    If you do not receive the email within five minutes, check your spam or junk folder. If you still cannot find it, contact your IT helpdesk — your organisation may enforce SSO, which means password resets must go through your identity provider instead.
+  </Accordion>
+
+  <Accordion title="Can I belong to multiple projects?">
+    Yes. Google Platform lets you be a member of as many projects as your organisation's plan allows. Each project maintains its own roles and permissions, so you can be an **Admin** in one project and a **Viewer** in another simultaneously.
+
+    To switch between projects, click your current project name in the top navigation bar and select a different project from the dropdown. You can also navigate directly to **Dashboard → Projects** to see a full list of every project you belong to.
+  </Accordion>
+
+  <Accordion title="What is the file size limit for attachments?">
+    The maximum size for a single file attachment is **250 MB**. If you need to share something larger, upload the file to an external storage service (such as your organisation's shared drive) and paste the link into Google Platform instead.
+
+    Supported attachment types include common document formats (PDF, DOCX, XLSX), images (PNG, JPG, GIF, SVG), archives (ZIP), and many others. Executable files (.exe, .sh, .bat) are blocked for security reasons.
+  </Accordion>
+
+  <Accordion title="How do I export my project data?">
+    Open the project you want to export, then go to **Project Settings → Data & Privacy → Export**. Choose a date range and select the data types you want to include — tasks, comments, attachments, and audit logs are all available. Click **Request Export** and Google Platform will prepare a downloadable archive (.zip) containing your data in JSON and CSV formats.
+
+    Large exports may take a few minutes to compile. You will receive an in-app notification and an email link when the file is ready. Export links expire after 48 hours for security, so download your file promptly.
+  </Accordion>
+
+  <Accordion title="Is there a mobile app?">
+    Google Platform does not currently offer a native mobile application. However, the web application is fully responsive and works well on modern mobile browsers such as Chrome and Safari on both iOS and Android. You can add it to your home screen for a near-native experience by tapping **Share → Add to Home Screen** (iOS) or **Menu → Add to Home Screen** (Android).
+
+    A dedicated mobile app is on the product roadmap. Keep an eye on the changelog and release notes for announcements.
+  </Accordion>
+
+  <Accordion title="How do I generate an API key?">
+    Go to **Account Settings → API → API Keys** and click **Generate New Key**. Give the key a descriptive label (for example, `ci-pipeline-prod`) so you can identify it later, then click **Create**. Copy the key immediately — Google Platform displays it only once for security reasons.
+
+    Store your API key in a secrets manager or environment variable and never commit it to source control. You can revoke or rotate a key at any time from the same **API Keys** page without disrupting other keys.
+  </Accordion>
+
+  <Accordion title="Who do I contact if I'm locked out?">
+    If you are locked out of your account, you have two options depending on your organisation's setup:
+
+    - **Email/password login:** Use the **Forgot password?** flow on the login page to regain access.
+    - **SSO login:** Contact your organisation's IT helpdesk to unlock or re-provision your identity provider account. Google Platform defers authentication entirely to your SSO provider, so the platform support team cannot reset SSO credentials on your behalf.
+
+    If neither option resolves the issue, email **support@your-domain.com** with your name, work email address, and a brief description of what you see when you try to log in.
+  </Accordion>
+
+  <Accordion title="Can I use Google Platform offline?">
+    Google Platform requires an active internet connection to function. Because data is stored and processed in the cloud, offline access is not supported at this time. If you lose connectivity mid-session, any unsaved changes to forms or text fields will be preserved in your browser until you reconnect, at which point they will sync automatically.
+
+    For work that must happen offline, export the relevant data (see *How do I export my project data?* above) in advance and work locally until your connection is restored.
+  </Accordion>
+
+</AccordionGroup>

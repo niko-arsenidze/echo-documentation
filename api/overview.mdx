@@ -1,0 +1,71 @@
+---
+title: 'Google Platform REST API: Overview and Base URLs'
+sidebarTitle: 'Overview'
+description: 'The Google Platform REST API lets you automate project management, user provisioning, and resource access. Learn about base URLs, versioning, and rate limits.'
+---
+
+The Google Platform REST API gives you programmatic control over every aspect of your workspace — from provisioning users and creating projects to uploading shared resources. All requests and responses use JSON, and every call must be authenticated with a valid API key. Read through this page to understand the foundational conventions before exploring individual endpoint references.
+
+## Base URL
+
+All API requests are made over HTTPS to the following base URL:
+
+```
+https://api.your-domain.com/v1
+```
+
+Replace `your-domain.com` with your organization's assigned Google Platform domain. Every endpoint path you see in the reference documentation is appended to this base URL.
+
+## Versioning
+
+The API is versioned through the URL path. The current stable version is **v1**, reflected as `/v1/` in all endpoint URLs. When Google Platform introduces a breaking change — such as removing a field or altering response structure — a new version (`/v2/`, etc.) is released. Older versions remain available for a deprecation window so you have time to migrate without disruption.
+
+## Request Format
+
+Send all request bodies as JSON and set the `Content-Type` header on every write operation:
+
+```
+Content-Type: application/json
+```
+
+Query parameters follow standard URL encoding. For multipart file uploads (see the Resources API), use `Content-Type: multipart/form-data` instead.
+
+## Rate Limits
+
+Each API key is subject to per-minute request limits based on the account tier. If you exceed your limit, the API returns a `429 Too Many Requests` response. Back off and retry after the interval specified in the `Retry-After` response header.
+
+| Tier       | Requests / Minute |
+| ---------- | ----------------- |
+| Standard   | 60                |
+| Pro        | 300               |
+| Enterprise | Unlimited         |
+
+## Response Format
+
+Every response from the API is JSON. Successful responses include a `data` field containing the requested resource or collection, and a `meta` field with contextual information such as pagination details.
+
+```json
+{
+  "data": { "..." : "..." },
+  "meta": { "page": 1, "per_page": 20, "total": 150 }
+}
+```
+
+When an error occurs, the response body contains an `error` object with a machine-readable `code` and a human-readable `message`:
+
+```json
+{
+  "error": { "code": "UNAUTHORIZED", "message": "Invalid or expired API key." }
+}
+```
+
+## Pagination
+
+Endpoints that return collections support cursor-free offset pagination via two query parameters:
+
+| Parameter  | Type    | Description                                   |
+| ---------- | ------- | --------------------------------------------- |
+| `page`     | integer | The page number to retrieve (default: `1`).   |
+| `per_page` | integer | Number of items per page (default: `20`, max: `100`). |
+
+The `meta` object in every paginated response includes `meta.total` (total record count), `meta.page` (current page), and `meta.per_page` (page size), so you can calculate the total number of pages and build navigation logic in your integration.

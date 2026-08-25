@@ -1,0 +1,106 @@
+---
+title: 'Connect Third-Party Tools to Google Platform'
+sidebarTitle: 'Integrations'
+description: 'Integrate Google Platform with tools like Slack, Jira, GitHub, and Google Workspace to sync data and receive notifications in the apps you already use.'
+---
+
+Google Platform connects to the external tools your team already relies on so you can keep work in sync without switching tabs. Each integration is authorized on a per-workspace basis and, once configured, is available to every member within that workspace. Admins control which integrations are enabled, and individual members manage their own notification or account-linking preferences within each one.
+
+## Available Integrations
+
+<CardGroup cols={2}>
+  <Card title="Slack" icon="bell">
+    Receive real-time notifications for project updates, comments, and status changes directly in your Slack channels.
+  </Card>
+  <Card title="GitHub" icon="code-branch">
+    Link pull requests, commits, and issues to Google Platform tasks so your engineering and product workflows stay aligned.
+  </Card>
+  <Card title="Jira" icon="tasks">
+    Sync Jira issues bidirectionally with Google Platform items to keep two-way traceability across planning and delivery.
+  </Card>
+  <Card title="Google Workspace" icon="google">
+    Attach Google Docs, Sheets, and Drive files directly to tasks, and sign in using your existing Google account.
+  </Card>
+</CardGroup>
+
+## Setting Up an Integration
+
+Each integration follows the same four-step authorization flow. Follow the steps below for the tool you want to connect.
+
+### Slack
+
+<Steps>
+  <Step title="Open Integrations">
+    Navigate to **Settings → Integrations** in the left sidebar.
+  </Step>
+  <Step title="Select Slack">
+    Locate the Slack card and click **Connect**.
+  </Step>
+  <Step title="Authorize Access">
+    You are redirected to Slack's OAuth page. Sign in to your Slack workspace and click **Allow** to grant the required permissions.
+  </Step>
+  <Step title="Configure Settings">
+    Choose which events trigger notifications (e.g., task assignments, status changes) and select the default Slack channel for workspace-wide alerts. Click **Save**.
+  </Step>
+</Steps>
+
+### GitHub
+
+<Steps>
+  <Step title="Open Integrations">
+    Navigate to **Settings → Integrations** in the left sidebar.
+  </Step>
+  <Step title="Select GitHub">
+    Locate the GitHub card and click **Connect**.
+  </Step>
+  <Step title="Authorize Access">
+    Sign in to GitHub when prompted and click **Authorize Google Platform** to grant repository read access.
+  </Step>
+  <Step title="Configure Settings">
+    Select the repositories you want to link, then map GitHub labels or milestones to Google Platform statuses. Click **Save**.
+  </Step>
+</Steps>
+
+### Jira
+
+<Steps>
+  <Step title="Open Integrations">
+    Navigate to **Settings → Integrations** in the left sidebar.
+  </Step>
+  <Step title="Select Jira">
+    Locate the Jira card and click **Connect**.
+  </Step>
+  <Step title="Authorize Access">
+    Enter your Jira site URL and click **Authorize**. You are redirected to Atlassian's authentication page — sign in and approve the connection.
+  </Step>
+  <Step title="Configure Settings">
+    Map Jira projects to Google Platform projects and define how status fields translate between the two tools. Click **Save**.
+  </Step>
+</Steps>
+
+### Google Workspace
+
+<Steps>
+  <Step title="Open Integrations">
+    Navigate to **Settings → Integrations** in the left sidebar.
+  </Step>
+  <Step title="Select Google Workspace">
+    Locate the Google Workspace card and click **Connect**.
+  </Step>
+  <Step title="Authorize Access">
+    Sign in with your Google account and grant Google Platform permission to read your Drive files and profile information.
+  </Step>
+  <Step title="Configure Settings">
+    Choose whether to enable single sign-on (SSO) for your entire workspace and decide which Drive folders are available for file attachment. Click **Save**.
+  </Step>
+</Steps>
+
+## Removing an Integration
+
+To disconnect an integration, navigate to **Settings → Integrations**, find the connected tool, and click the **···** overflow menu on its card. Select **Remove Integration** and confirm the dialog. Google Platform immediately revokes its access token — no data is deleted, but any linked items will lose their live sync connection.
+
+If you want to reconnect the same tool later, repeat the setup steps above from the beginning.
+
+<Tip>
+  If an integration card appears grayed out with a lock icon, your workspace Admin has restricted access to that tool. Contact your Admin to request that it be enabled for your workspace.
+</Tip>

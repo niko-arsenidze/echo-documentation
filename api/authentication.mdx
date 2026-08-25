@@ -1,0 +1,72 @@
+---
+title: 'Authenticate Requests to the Google Platform API'
+sidebarTitle: 'Authentication'
+description: 'Generate an API key from your Google Platform account settings and pass it as a Bearer token in the Authorization header on every API request.'
+---
+
+Every request to the Google Platform API must include a valid API key. The API uses Bearer token authentication — you generate a key in your account settings and send it in the `Authorization` header on each call. There are no session cookies or OAuth flows required for server-to-server integrations; a single header is all you need to get started.
+
+## Generating an API Key
+
+<Steps>
+  <Step title="Open Account Settings">
+    Log in to your Google Platform dashboard and click your avatar or username in the top-right corner, then select **Account Settings** from the dropdown menu.
+  </Step>
+  <Step title="Navigate to the API Keys Tab">
+    In the Account Settings sidebar, select the **API Keys** tab. You will see a list of any previously generated keys along with their creation dates and assigned scopes.
+  </Step>
+  <Step title="Click Generate New Key">
+    Click the **Generate New Key** button. In the dialog that appears, give the key a descriptive name (for example, `ci-pipeline` or `data-export-script`) and select the scopes your integration requires.
+  </Step>
+  <Step title="Copy and Store the Key Securely">
+    After the key is created, copy it immediately and store it in a secrets manager or environment variable. The full key value is shown **only once** — you cannot retrieve it again after closing the dialog.
+  </Step>
+</Steps>
+
+<Warning>
+  API keys are displayed in full **only at the moment of creation**. If you navigate away or close the dialog without copying the key, you must delete it and generate a new one. Never commit API keys to source control or include them in client-side code.
+</Warning>
+
+## Using Your API Key
+
+Pass your API key as a Bearer token in the `Authorization` header on every request:
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  https://api.your-domain.com/v1/projects
+```
+
+Replace `YOUR_API_KEY` with your actual key value. All authenticated endpoints require this header; requests without it — or with an invalid key — receive a `401 Unauthorized` response.
+
+## Key Scopes
+
+When generating a key you assign one or more scopes that restrict what the key can do. Follow the principle of least privilege and grant only the scopes your integration needs.
+
+| Scope   | Description                                                                 |
+| ------- | --------------------------------------------------------------------------- |
+| `read`  | Read-only access to all resources the authenticated user can view.          |
+| `write` | Create and update resources (projects, users, files). Includes `read`.      |
+| `admin` | Full access, including deleting resources and managing other users' keys.   |
+
+## Rotating and Revoking Keys
+
+Rotate keys regularly and revoke any key that may have been compromised.
+
+<Steps>
+  <Step title="Open the API Keys Tab">
+    Navigate to **Account Settings → API Keys** to see all active keys.
+  </Step>
+  <Step title="Rotate a Key">
+    Click the **Rotate** icon next to the key you want to replace. Google Platform immediately generates a replacement key with the same name and scopes. Copy the new key value before closing the dialog, then update all services using the old key.
+  </Step>
+  <Step title="Revoke a Key">
+    To permanently delete a key, click the **Delete** (trash) icon next to it and confirm the action. Revoked keys stop working instantly — any service still using the old key will receive `401 Unauthorized` errors until it is updated.
+  </Step>
+</Steps>
+
+## Common Authentication Errors
+
+| HTTP Status       | Error Code     | Cause                                                              |
+| ----------------- | -------------- | ------------------------------------------------------------------ |
+| `401 Unauthorized` | `UNAUTHORIZED` | The API key is missing, malformed, or has been revoked.            |
+| `403 Forbidden`    | `FORBIDDEN`    | The key is valid but lacks the scope required for this operation.  |
