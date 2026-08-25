@@ -1,7 +1,7 @@
 ---
-title: 'Users API: List, Retrieve, and Create Users'
-sidebarTitle: 'Users'
-description: 'Use the Google Platform Users API to list workspace members, retrieve individual user profiles, and provision new accounts programmatically.'
+title: "Users API: List, Retrieve and Create Workspace Users"
+sidebarTitle: "Users"
+description: "Use the Google Platform Users API to list workspace members, retrieve individual user profiles, and provision new accounts programmatically."
 ---
 
 The Users API lets you manage every member of your Google Platform workspace without touching the dashboard. Use it to automate onboarding flows, synchronize user directories, audit account roles, and provision accounts from external identity providers. All Users endpoints are scoped under `/v1/users` and require a key with at least `read` scope for GET operations or `write` scope for POST operations.
@@ -44,7 +44,7 @@ List all users in the workspace. Results are paginated and can be filtered by ro
 
 ```bash
 curl -H "Authorization: Bearer YOUR_API_KEY" \
-  "https://api.your-domain.com/v1/users?page=1&per_page=20&role=admin"
+  "https://api.googleplatform.app/v1/users?page=1&per_page=20&role=admin"
 ```
 
 ### Query Parameters
@@ -74,7 +74,7 @@ Returns a paginated `data` array of user objects and a `meta` object.
       "name": "Alex Rivera",
       "role": "admin",
       "created_at": "2024-01-10T09:00:00Z",
-      "avatar_url": "https://cdn.your-domain.com/avatars/alex.png"
+      "avatar_url": "https://cdn.googleplatform.app/avatars/alex.png"
     }
   ],
   "meta": { "page": 1, "per_page": 20, "total": 42 }
@@ -89,7 +89,7 @@ Retrieve a single user by their unique ID.
 
 ```bash
 curl -H "Authorization: Bearer YOUR_API_KEY" \
-  https://api.your-domain.com/v1/users/usr_01hx3k9p2bnf7qw8r
+  https://api.googleplatform.app/v1/users/usr_01hx3k9p2bnf7qw8r
 ```
 
 ### Path Parameters
@@ -110,7 +110,7 @@ Returns a single user object inside `data`.
     "name": "Alex Rivera",
     "role": "admin",
     "created_at": "2024-01-10T09:00:00Z",
-    "avatar_url": "https://cdn.your-domain.com/avatars/alex.png"
+    "avatar_url": "https://cdn.googleplatform.app/avatars/alex.png"
   },
   "meta": {}
 }
@@ -127,7 +127,7 @@ curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"email": "jordan@example.com", "name": "Jordan Kim", "role": "member"}' \
-  https://api.your-domain.com/v1/users
+  https://api.googleplatform.app/v1/users
 ```
 
 ### Body Parameters

@@ -1,10 +1,10 @@
 ---
-title: 'Authenticate Requests to the Google Platform API'
-sidebarTitle: 'Authentication'
-description: 'Generate an API key from your Google Platform account settings and pass it as a Bearer token in the Authorization header on every API request.'
+title: "Authenticate API Requests with Google Platform Keys"
+sidebarTitle: "Authentication"
+description: "Generate an API key from your Google Platform account settings and pass it as a Bearer token in the Authorization header on every API request."
 ---
 
-Every request to the Google Platform API must include a valid API key. The API uses Bearer token authentication — you generate a key in your account settings and send it in the `Authorization` header on each call. There are no session cookies or OAuth flows required for server-to-server integrations; a single header is all you need to get started.
+Every request to the Google Platform API must include a valid API key. The API uses Bearer token authentication — you generate a key in your account settings and send it in the `Authorization` header on each call. There are no session cookies required for server-to-server integrations; a single header is all you need to get started.
 
 ## Generating an API Key
 
@@ -33,20 +33,43 @@ Pass your API key as a Bearer token in the `Authorization` header on every reque
 
 ```bash
 curl -H "Authorization: Bearer YOUR_API_KEY" \
-  https://api.your-domain.com/v1/projects
+  https://api.googleplatform.app/v1/projects
 ```
 
 Replace `YOUR_API_KEY` with your actual key value. All authenticated endpoints require this header; requests without it — or with an invalid key — receive a `401 Unauthorized` response.
+
+## Obtaining a Short-Lived Token
+
+For scenarios where you need a short-lived token rather than a long-lived API key — such as delegating access to a browser-based client — you can exchange your API key for a temporary Bearer token using the token endpoint:
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"api_key": "YOUR_API_KEY"}' \
+  https://api.googleplatform.app/api/auth/token
+```
+
+A successful request returns a time-limited access token:
+
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+```
+
+Use the returned `access_token` value as the Bearer token in subsequent API calls. Tokens expire after the number of seconds indicated by `expires_in`. When a token expires, request a new one using the same endpoint.
 
 ## Key Scopes
 
 When generating a key you assign one or more scopes that restrict what the key can do. Follow the principle of least privilege and grant only the scopes your integration needs.
 
-| Scope   | Description                                                                 |
-| ------- | --------------------------------------------------------------------------- |
-| `read`  | Read-only access to all resources the authenticated user can view.          |
-| `write` | Create and update resources (projects, users, files). Includes `read`.      |
-| `admin` | Full access, including deleting resources and managing other users' keys.   |
+| Scope   | Description                                                                |
+| ------- | -------------------------------------------------------------------------- |
+| `read`  | Read-only access to all resources the authenticated user can view.         |
+| `write` | Create and update resources (projects, users, files). Includes `read`.     |
+| `admin` | Full access, including deleting resources and managing other users' keys.  |
 
 ## Rotating and Revoking Keys
 
@@ -66,7 +89,7 @@ Rotate keys regularly and revoke any key that may have been compromised.
 
 ## Common Authentication Errors
 
-| HTTP Status       | Error Code     | Cause                                                              |
-| ----------------- | -------------- | ------------------------------------------------------------------ |
-| `401 Unauthorized` | `UNAUTHORIZED` | The API key is missing, malformed, or has been revoked.            |
-| `403 Forbidden`    | `FORBIDDEN`    | The key is valid but lacks the scope required for this operation.  |
+| HTTP Status        | Error Code     | Cause                                                             |
+| ------------------ | -------------- | ----------------------------------------------------------------- |
+| `401 Unauthorized` | `UNAUTHORIZED` | The API key is missing, malformed, or has been revoked.           |
+| `403 Forbidden`    | `FORBIDDEN`    | The key is valid but lacks the scope required for this operation. |

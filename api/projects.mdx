@@ -1,10 +1,10 @@
 ---
-title: 'Projects API: Manage Projects Programmatically'
-sidebarTitle: 'Projects'
-description: 'Create, list, update, and delete projects using the Google Platform Projects API. Automate project provisioning and lifecycle management in your organization.'
+title: "Google Platform Projects API: Full Reference Guide"
+sidebarTitle: "Projects"
+description: "Create, list, update, and delete projects with the Google Platform Projects API. Automate project provisioning and lifecycle management at scale."
 ---
 
-The Projects API is the primary interface for managing the organizational units inside your Google Platform workspace. Use it to automate project provisioning at scale, enforce consistent visibility policies, and integrate project lifecycle management into your own tooling or CI/CD pipelines. All endpoints are scoped under `/v1/projects` and require a `read`-scoped key for GET requests, `write` for POST and PATCH, and `admin` for DELETE.
+The Projects API is the primary interface for managing the organizational units inside your Google Platform workspace. Use it to automate project provisioning, enforce consistent visibility policies, and integrate project lifecycle management into your own tooling or scripts. All endpoints are scoped under `/v1/projects` and require a `read`-scoped key for GET requests, `write` for POST and PATCH, and `admin` for DELETE.
 
 ---
 
@@ -48,7 +48,7 @@ List all projects the authenticated user has access to. Results are paginated an
 
 ```bash
 curl -H "Authorization: Bearer YOUR_API_KEY" \
-  "https://api.your-domain.com/v1/projects?page=1&per_page=20&visibility=internal"
+  "https://api.googleplatform.app/v1/projects?page=1&per_page=20&visibility=internal"
 ```
 
 ### Query Parameters
@@ -94,7 +94,7 @@ Retrieve a single project by its unique ID.
 
 ```bash
 curl -H "Authorization: Bearer YOUR_API_KEY" \
-  https://api.your-domain.com/v1/projects/prj_03az5n1r4dph9sy0t
+  https://api.googleplatform.app/v1/projects/prj_03az5n1r4dph9sy0t
 ```
 
 ### Path Parameters
@@ -132,8 +132,8 @@ Create a new project in your workspace.
 curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"name": "Data Pipeline", "description": "ETL automation project.", "visibility": "private"}' \
-  https://api.your-domain.com/v1/projects
+  -d '{"name": "Data Pipeline", "description": "Automated data processing project.", "visibility": "private"}' \
+  https://api.googleplatform.app/v1/projects
 ```
 
 ### Body Parameters
@@ -159,7 +159,7 @@ Returns the newly created project object with HTTP `201 Created`.
   "data": {
     "id": "prj_04bq6o2s5eqi0tz1u",
     "name": "Data Pipeline",
-    "description": "ETL automation project.",
+    "description": "Automated data processing project.",
     "visibility": "private",
     "owner_id": "usr_01hx3k9p2bnf7qw8r",
     "member_count": 1,
@@ -180,7 +180,7 @@ curl -X PATCH \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"visibility": "public", "description": "Now open to all workspace members."}' \
-  https://api.your-domain.com/v1/projects/prj_04bq6o2s5eqi0tz1u
+  https://api.googleplatform.app/v1/projects/prj_04bq6o2s5eqi0tz1u
 ```
 
 ### Path Parameters
@@ -229,13 +229,13 @@ Returns the updated project object inside `data`.
 Permanently delete a project and all of its associated resources, members, and activity history.
 
 <Warning>
-  Deleting a project is **irreversible**. All resources, files, and settings attached to the project are permanently removed and cannot be recovered. Revoke member access and export any important data before calling this endpoint.
+  Deleting a project is **irreversible**. All resources, files, and settings attached to the project are permanently removed and cannot be recovered. Export any important data and ensure members have been notified before calling this endpoint.
 </Warning>
 
 ```bash
 curl -X DELETE \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  https://api.your-domain.com/v1/projects/prj_04bq6o2s5eqi0tz1u
+  https://api.googleplatform.app/v1/projects/prj_04bq6o2s5eqi0tz1u
 ```
 
 ### Path Parameters

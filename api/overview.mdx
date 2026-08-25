@@ -1,7 +1,7 @@
 ---
-title: 'Google Platform REST API: Overview and Base URLs'
-sidebarTitle: 'Overview'
-description: 'The Google Platform REST API lets you automate project management, user provisioning, and resource access. Learn about base URLs, versioning, and rate limits.'
+title: "Google Platform REST API: Overview and Base URL Guide"
+sidebarTitle: "Overview"
+description: "Explore the Google Platform REST API base URL, versioning strategy, rate limits by plan tier, pagination parameters, and standard JSON response format."
 ---
 
 The Google Platform REST API gives you programmatic control over every aspect of your workspace — from provisioning users and creating projects to uploading shared resources. All requests and responses use JSON, and every call must be authenticated with a valid API key. Read through this page to understand the foundational conventions before exploring individual endpoint references.
@@ -11,10 +11,10 @@ The Google Platform REST API gives you programmatic control over every aspect of
 All API requests are made over HTTPS to the following base URL:
 
 ```
-https://api.your-domain.com/v1
+https://api.googleplatform.app/v1
 ```
 
-Replace `your-domain.com` with your organization's assigned Google Platform domain. Every endpoint path you see in the reference documentation is appended to this base URL.
+Every endpoint path you see in the reference documentation is appended to this base URL. Requests made over plain HTTP are automatically rejected — HTTPS is required for all calls.
 
 ## Versioning
 
@@ -46,7 +46,7 @@ Every response from the API is JSON. Successful responses include a `data` field
 
 ```json
 {
-  "data": { "..." : "..." },
+  "data": { "id": "example_id", "name": "Example Resource" },
   "meta": { "page": 1, "per_page": 20, "total": 150 }
 }
 ```
@@ -63,9 +63,9 @@ When an error occurs, the response body contains an `error` object with a machin
 
 Endpoints that return collections support cursor-free offset pagination via two query parameters:
 
-| Parameter  | Type    | Description                                   |
-| ---------- | ------- | --------------------------------------------- |
-| `page`     | integer | The page number to retrieve (default: `1`).   |
+| Parameter  | Type    | Description                                           |
+| ---------- | ------- | ----------------------------------------------------- |
+| `page`     | integer | The page number to retrieve (default: `1`).           |
 | `per_page` | integer | Number of items per page (default: `20`, max: `100`). |
 
 The `meta` object in every paginated response includes `meta.total` (total record count), `meta.page` (current page), and `meta.per_page` (page size), so you can calculate the total number of pages and build navigation logic in your integration.

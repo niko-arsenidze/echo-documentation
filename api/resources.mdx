@@ -1,10 +1,10 @@
 ---
-title: 'Resources API: Upload and Access Shared Files'
-sidebarTitle: 'Resources'
-description: 'Use the Google Platform Resources API to list, upload, download, and delete shared files and links attached to your projects.'
+title: "Google Platform Resources API: Files and Links Guide"
+sidebarTitle: "Resources"
+description: "Use the Google Platform Resources API to list, upload, retrieve, and delete shared files and external links attached to your workspace projects."
 ---
 
-The Resources API lets you attach files and external links directly to your Google Platform projects, making all relevant assets discoverable in one place. Use it to programmatically upload build artifacts, design files, or documents, register external URLs as link resources, and clean up stale attachments as part of automated workflows. All Resources endpoints are nested under a parent project: `/v1/projects/{project_id}/resources`.
+The Resources API lets you attach files and external links directly to your Google Platform projects, making all relevant assets discoverable in one place. Use it to programmatically upload documents, register external URLs as link resources, and clean up stale attachments as part of automated workflows. All Resources endpoints are nested under a parent project: `/v1/projects/{project_id}/resources`.
 
 ---
 
@@ -44,11 +44,11 @@ Every Resources endpoint returns objects with the following fields:
 
 ## GET /projects/{project_id}/resources
 
-List all resources attached to a project. Results are paginated.
+List all resources attached to a project. Results are paginated and include both file and link resource types.
 
 ```bash
 curl -H "Authorization: Bearer YOUR_API_KEY" \
-  "https://api.your-domain.com/v1/projects/prj_03az5n1r4dph9sy0t/resources?page=1&per_page=20"
+  "https://api.googleplatform.app/v1/projects/prj_03az5n1r4dph9sy0t/resources?page=1&per_page=20"
 ```
 
 ### Path Parameters
@@ -78,7 +78,7 @@ Returns a paginated `data` array of resource objects.
       "id": "res_05cr7p3t6frj1ua2v",
       "name": "Architecture Diagram",
       "type": "file",
-      "url": "https://cdn.your-domain.com/resources/arch-diagram.pdf",
+      "url": "https://cdn.googleplatform.app/resources/arch-diagram.pdf",
       "size_bytes": 204800,
       "uploaded_by": "usr_01hx3k9p2bnf7qw8r",
       "created_at": "2024-03-10T14:00:00Z"
@@ -125,10 +125,10 @@ curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"name": "Design Spec", "type": "link", "url": "https://figma.com/file/abc123"}' \
-  https://api.your-domain.com/v1/projects/prj_03az5n1r4dph9sy0t/resources
+  https://api.googleplatform.app/v1/projects/prj_03az5n1r4dph9sy0t/resources
 ```
 
-**Upload a file resource:**
+**Upload a file resource (multipart/form-data):**
 
 ```bash
 curl -X POST \
@@ -136,7 +136,7 @@ curl -X POST \
   -F "name=Release Notes" \
   -F "type=file" \
   -F "file=@/local/path/release-notes.pdf" \
-  https://api.your-domain.com/v1/projects/prj_03az5n1r4dph9sy0t/resources
+  https://api.googleplatform.app/v1/projects/prj_03az5n1r4dph9sy0t/resources
 ```
 
 ### Response
@@ -149,7 +149,7 @@ Returns the newly created resource object with HTTP `201 Created`.
     "id": "res_06ds8q4u7gsk2vb3w",
     "name": "Release Notes",
     "type": "file",
-    "url": "https://cdn.your-domain.com/resources/release-notes.pdf",
+    "url": "https://cdn.googleplatform.app/resources/release-notes.pdf",
     "size_bytes": 51200,
     "uploaded_by": "usr_01hx3k9p2bnf7qw8r",
     "created_at": "2024-06-20T09:15:00Z"
@@ -166,7 +166,7 @@ Retrieve a single resource by its ID.
 
 ```bash
 curl -H "Authorization: Bearer YOUR_API_KEY" \
-  https://api.your-domain.com/v1/projects/prj_03az5n1r4dph9sy0t/resources/res_05cr7p3t6frj1ua2v
+  https://api.googleplatform.app/v1/projects/prj_03az5n1r4dph9sy0t/resources/res_05cr7p3t6frj1ua2v
 ```
 
 ### Path Parameters
@@ -189,7 +189,7 @@ Returns a single resource object inside `data`.
     "id": "res_05cr7p3t6frj1ua2v",
     "name": "Architecture Diagram",
     "type": "file",
-    "url": "https://cdn.your-domain.com/resources/arch-diagram.pdf",
+    "url": "https://cdn.googleplatform.app/resources/arch-diagram.pdf",
     "size_bytes": 204800,
     "uploaded_by": "usr_01hx3k9p2bnf7qw8r",
     "created_at": "2024-03-10T14:00:00Z"
@@ -202,12 +202,12 @@ Returns a single resource object inside `data`.
 
 ## DELETE /projects/{project_id}/resources/{id}
 
-Remove a resource from a project. For file-type resources, the stored file is also deleted from the CDN.
+Remove a resource from a project. For file-type resources, the stored file is also permanently deleted.
 
 ```bash
 curl -X DELETE \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  https://api.your-domain.com/v1/projects/prj_03az5n1r4dph9sy0t/resources/res_05cr7p3t6frj1ua2v
+  https://api.googleplatform.app/v1/projects/prj_03az5n1r4dph9sy0t/resources/res_05cr7p3t6frj1ua2v
 ```
 
 ### Path Parameters
